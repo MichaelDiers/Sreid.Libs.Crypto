@@ -12,7 +12,7 @@ jobs:
   build-and-test:
     uses: MichaelDiers/github-workflows/.github/workflows/dotnet-build-and-test.yaml@main
     with:
-      solution-directory: ./
+      solution-directory: Sreid.Libs.Crypto
       runs-on: windows-latest
   create-nuget:
     needs: build-and-test
