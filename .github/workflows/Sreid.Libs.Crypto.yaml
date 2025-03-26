@@ -30,3 +30,4 @@ jobs:
       project-version: ${{needs.create-nuget.outputs.new-version}}
       solution-directory: Sreid.Libs.Crypto
       runs-on: windows-latest
+      assembly-filters: -*.Tests;-AltCover.Monitor;-*.Test;-Microsoft.*;-testhost;Moq.*
