@@ -1,0 +1,32 @@
+name: Sreid.Libs.Crypto
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+  packages: write
+  id-token: write
+  pages: write
+jobs:
+  build-and-test:
+    uses: MichaelDiers/github-workflows/.github/workflows/dotnet-build-and-test.yaml@main
+    with:
+      solution-directory: ./
+      runs-on: windows-latest
+  create-nuget:
+    needs: build-and-test
+    uses: MichaelDiers/github-workflows/.github/workflows/dotnet-nuget.yaml@main
+    with:
+      project-name: Sreid.Libs.Crypto
+      solution-directory: Sreid.Libs.Crypto
+      runs-on: windows-latest
+  create-code-coverage-page:
+    needs: create-nuget
+    uses: MichaelDiers/github-workflows/.github/workflows/dotnet-code-coverage-page.yaml@main
+    with:
+      project-name: Sreid.Libs.Crypto
+      test-project-name: Sreid.Libs.Crypto.Tests
+      project-version: ${{needs.create-nuget.outputs.new-version}}
+      solution-directory: Sreid.Libs.Crypto
+      runs-on: windows-latest
