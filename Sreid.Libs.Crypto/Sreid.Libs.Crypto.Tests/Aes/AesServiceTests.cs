@@ -42,6 +42,22 @@ public class AesServiceTests
                 .All(index => data[index] == decrypted[index]));
     }
 
+    [Fact]
+    public void Decrypt_ShouldFail_DueToInvalidData()
+    {
+        var aesService = this.cryptoFactory.CreateAesService();
+
+        var data = new byte[4];
+        RandomNumberGenerator.Create().GetNonZeroBytes(data);
+
+        var aesKey = aesService.GenerateAesKey();
+
+        Assert.Throws<InvalidOperationException>(
+            () => aesService.Decrypt(
+                aesKey,
+                data));
+    }
+
     [Theory]
     [InlineData(AesKeySizeInBits.KeySize128)]
     [InlineData(AesKeySizeInBits.KeySize192)]
@@ -71,6 +87,23 @@ public class AesServiceTests
                     0,
                     data.Length)
                 .All(index => data[index] == decrypted[index]));
+    }
+
+    [Fact]
+    public async Task DecryptAsync_ShouldFail_DueToInvalidData()
+    {
+        var aesService = this.cryptoFactory.CreateAesService();
+
+        var data = new byte[4];
+        RandomNumberGenerator.Create().GetNonZeroBytes(data);
+
+        var aesKey = await aesService.GenerateAesKeyAsync(TestContext.Current.CancellationToken);
+
+        await Assert.ThrowsAsync<InvalidOperationException>(
+            () => aesService.DecryptAsync(
+                aesKey,
+                data,
+                TestContext.Current.CancellationToken));
     }
 
     [Theory]
