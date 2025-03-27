@@ -117,7 +117,7 @@ public class AesBrotliStreamTests : IDisposable
         RandomNumberGenerator.Create().GetNonZeroBytes(data);
 
         // decrypt
-        using var decryptedMemoryStream = new MemoryStream();
+        var decryptedMemoryStream = new MemoryStream();
         var decryptMemoryStream = new MemoryStream(data);
         var decryptAesBrotliStream = new AesBrotliStream(
             decryptMemoryStream,
@@ -135,6 +135,7 @@ public class AesBrotliStreamTests : IDisposable
                 {
                     decryptAesBrotliStream.Dispose();
                     decryptMemoryStream.Dispose();
+                    decryptedMemoryStream.Dispose();
                 }
             });
     }
