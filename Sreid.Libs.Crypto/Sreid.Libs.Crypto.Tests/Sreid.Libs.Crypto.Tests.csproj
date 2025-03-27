@@ -40,8 +40,4 @@
     <ProjectReference Include="..\Sreid.Libs.Crypto\Sreid.Libs.Crypto.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Streams\" />
-  </ItemGroup>
-
 </Project>

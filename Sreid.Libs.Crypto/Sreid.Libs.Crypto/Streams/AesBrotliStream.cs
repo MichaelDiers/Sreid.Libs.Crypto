@@ -337,7 +337,7 @@ public class AesBrotliStream(
             this.cryptoTransform,
             CryptoStreamMode.Read);
 
-        // compress using brotli
+        // decompress using brotli
         this.brotliStream = new BrotliStream(
             this.cryptoStream,
             CompressionMode.Decompress);
