@@ -105,16 +105,25 @@ public class AesBrotliStreamTests : IDisposable
                 .All(index => data[index] == decrypted[index]));
     }
 
-    [Fact]
-    public void Decrypt_ShouldFail_DueToInvalidData()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(3)]
+    [InlineData(16)]
+    public void Decrypt_ShouldFail_DueToInvalidData(int dataLength)
     {
         var aesKey = DependencyHelper
             .GetRequiredService<ICryptoFactory>(FactoryServiceCollectionExtensions.TryAddCryptoFactory)
             .CreateAesService()
             .GenerateAesKey();
 
-        var data = new byte[5];
+        var data = new byte[dataLength];
         RandomNumberGenerator.Create().GetNonZeroBytes(data);
+        if (dataLength != 0)
+        {
+            data[0] = 16;
+        }
 
         // decrypt
         var decryptedMemoryStream = new MemoryStream();
