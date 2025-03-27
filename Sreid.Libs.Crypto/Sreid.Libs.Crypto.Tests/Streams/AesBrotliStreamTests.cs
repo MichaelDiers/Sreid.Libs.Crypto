@@ -105,6 +105,40 @@ public class AesBrotliStreamTests : IDisposable
                 .All(index => data[index] == decrypted[index]));
     }
 
+    [Fact]
+    public void Decrypt_ShouldFail_DueToInvalidData()
+    {
+        var aesKey = DependencyHelper
+            .GetRequiredService<ICryptoFactory>(FactoryServiceCollectionExtensions.TryAddCryptoFactory)
+            .CreateAesService()
+            .GenerateAesKey();
+
+        var data = new byte[5];
+        RandomNumberGenerator.Create().GetNonZeroBytes(data);
+
+        // decrypt
+        using var decryptedMemoryStream = new MemoryStream();
+        var decryptMemoryStream = new MemoryStream(data);
+        var decryptAesBrotliStream = new AesBrotliStream(
+            decryptMemoryStream,
+            AesBrotliStreamMode.Unpack,
+            aesKey);
+
+        Assert.Throws<InvalidOperationException>(
+            () =>
+            {
+                try
+                {
+                    decryptAesBrotliStream.CopyTo(decryptedMemoryStream);
+                }
+                finally
+                {
+                    decryptAesBrotliStream.Dispose();
+                    decryptMemoryStream.Dispose();
+                }
+            });
+    }
+
     [Theory]
     [InlineData(AesKeySizeInBits.KeySize128)]
     [InlineData(AesKeySizeInBits.KeySize192)]
@@ -228,6 +262,32 @@ public class AesBrotliStreamTests : IDisposable
         using var stream = this.Initialize(streamMode);
 
         stream.Flush();
+    }
+
+    [Fact]
+    public void Flush_AfterWrite()
+    {
+        var aesKey = this.cryptoFactory.CreateAesService().GenerateAesKey();
+
+        using var encryptedStream = new MemoryStream();
+        using var aesBrotliStream = new AesBrotliStream(
+            encryptedStream,
+            AesBrotliStreamMode.Pack,
+            aesKey);
+
+        var data = new byte[16];
+        RandomNumberGenerator.Create().GetNonZeroBytes(data);
+
+        aesBrotliStream.Write(data);
+        aesBrotliStream.Write(
+            data,
+            1,
+            2);
+
+        aesBrotliStream.Flush();
+
+        var encrypted = encryptedStream.ToArray();
+        Assert.NotNull(encrypted);
     }
 
     [Theory]
