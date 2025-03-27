@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 /// <summary>
 ///     A service that provides rsa functionality.
 /// </summary>
+/// <param name="rsaOptions">The rsa algorithm options.</param>
 /// <seealso cref="IRsaService" />
 internal class RsaService(RsaOptions rsaOptions) : IRsaService
 {

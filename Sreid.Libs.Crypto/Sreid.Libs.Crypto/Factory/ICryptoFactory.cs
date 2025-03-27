@@ -1,5 +1,6 @@
 ﻿namespace Sreid.Libs.Crypto.Factory;
 
+using Sreid.Libs.Crypto.Aes;
 using Sreid.Libs.Crypto.Rsa;
 
 /// <summary>
@@ -7,6 +8,13 @@ using Sreid.Libs.Crypto.Rsa;
 /// </summary>
 public interface ICryptoFactory
 {
+    /// <summary>
+    ///     Creates a new service that supports aes.
+    /// </summary>
+    /// <param name="aesOptions">The options of the aes algorithm.</param>
+    /// <returns>A new aes service.</returns>
+    IAesService CreateAesService(AesOptions? aesOptions = null);
+
     /// <summary>
     ///     Creates a new service that supports rsa.
     /// </summary>
