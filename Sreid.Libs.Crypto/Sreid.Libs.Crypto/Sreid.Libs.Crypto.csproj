@@ -6,7 +6,20 @@
     <Nullable>enable</Nullable>
     <RepositoryUrl>https://github.com/MichaelDiers/Sreid.Libs.Crypto</RepositoryUrl>
     <Version>1.0.9</Version>
+    <Authors>Michael Diers</Authors>
+    <Description>A library that provides cryptography functionality.</Description>
+    <PackageProjectUrl>https://github.com/MichaelDiers/Sreid.Libs.Crypto</PackageProjectUrl>
+    <PackageTags>Cryptography</PackageTags>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.3" />
